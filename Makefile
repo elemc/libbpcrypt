@@ -20,4 +20,4 @@ test: shared
 
 macosx:
 	clang -dynamiclib -o libbpcrypt.dylib -lssl -lcrypto libbpcrypt.c -Wno-deprecated-declarations
-	clang -I. -L. -o test libbpcrypt.dylib test.c	-Wno-deprecated-declarations
+	clang -I. -L. -o test libbpcrypt.dylib test.c -lcrypto -Wno-deprecated-declarations
