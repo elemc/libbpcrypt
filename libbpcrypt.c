@@ -20,7 +20,7 @@ bp_buffer_t *encrypt_buffer( bp_buffer_t *buffer, bp_size_t buffer_size,
     }
 
     /* max ciphertext len for a n bytes of plaintext is n + AES_BLOCK_SIZE -1 bytes */
-    bp_size_t cipher_size = buffer_size + AES_BLOCK_SIZE;
+    bp_size_t cipher_size = buffer_size + AES_BLOCK_SIZE; // - 1;
     bp_size_t final_size = 0;
     
     bp_buffer_t *cipher_buffer = malloc( cipher_size );

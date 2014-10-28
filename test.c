@@ -80,8 +80,6 @@ int stage3 ( char *file_for_read, bp_buffer_t *key, bp_size_t key_size ) {
 
     bp_size_t ffw_size;
     char *file_for_write = decrypt_file_name( file_for_read, &ffw_size );
-    /* malloc( (strlen(file_for_read) + strlen(add_file_name) + 1) * sizeof( char ) );
-    sprintf( file_for_write, "%s%s", file_for_read, add_file_name ); */
     printf("Decrypt file name is %s\n", file_for_write);
 
     bp_size_t buffer_len;
@@ -91,9 +89,8 @@ int stage3 ( char *file_for_read, bp_buffer_t *key, bp_size_t key_size ) {
         return 3;
     }
 
-    bp_buffer_t *new_all_buf;
     bp_size_t new_all_len;
-    new_all_buf = decrypt_buffer ( buffer, buffer_len, key, key_size, &new_all_len );
+    bp_buffer_t *new_all_buf = decrypt_buffer ( buffer, buffer_len, key, key_size, &new_all_len );
 
     int wd;
     wd = open ( file_for_write, O_WRONLY | O_CREAT, 0644 );
@@ -106,6 +103,7 @@ int stage3 ( char *file_for_read, bp_buffer_t *key, bp_size_t key_size ) {
     close(wd);
     free( buffer );
     free( new_all_buf );
+    free( file_for_write );
 
     return 0;
 }
@@ -129,6 +127,8 @@ unsigned char *half_stage4( char *filename ) {
     MD5_Update( &c, buffer1, buffer_len1 );
 
     MD5_Final( md5sum, &c );
+
+    free( buffer1 );
     
     return md5sum;
 }
@@ -165,12 +165,11 @@ int main ( int argc, char *argv[] ) {
     cipher = encrypt_buffer ( buf, buf_size, key, key_size, &cipher_len );
     clean = decrypt_buffer ( cipher, cipher_len, key, key_size, &clean_len );
     
-    printf("Original text \"%s\" (%d)\n", buf, buf_size);
-    printf("Encrypted text \"%s\" (%d)\n", cipher, cipher_len );
-    printf("Decrypted text \"%s\" (%d)\n", clean, clean_len );
+    //printf("Original text \"%s\" (%d)\n", buf, buf_size);
+    //printf("Encrypted text \"%s\" (%d)\n", cipher, cipher_len );
+    //printf("Decrypted text \"%s\" (%d)\n", clean, clean_len );
 
     free( cipher );
-    free( clean );
 
     int cmpresult = strncmp( (char *)buf, (char *)clean, clean_len );
     if ( cmpresult == 0 )
@@ -189,6 +188,7 @@ int main ( int argc, char *argv[] ) {
     stage3( argv[2], key, key_size );
     stage4( argv[1], dfn );
 
+    free( clean );
     free( dfn );
 
     return 0;
