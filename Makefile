@@ -16,7 +16,7 @@ libbpcrypt.o:
 	gcc -c -fPIC libbpcrypt.c -g
 
 test: shared
-	gcc -I. -L. -o test test.c -lbpcrypt -g
+	gcc -I. -L. -o test test.c -lbpcrypt -lcrypto -g
 
 macosx:
 	clang -dynamiclib -o libbpcrypt.dylib -lssl -lcrypto libbpcrypt.c -Wno-deprecated-declarations
