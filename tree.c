@@ -72,11 +72,8 @@ void BPTreeRecord_Final( BPTreeRecord *record ) {
 
     // Final childs
     if ( record->child_count > 0 ) {
-//        printf("\n\tChild: %p\n", record->first_child);
-        while( record->first_child != NULL ) {
+        while( record->first_child != NULL ) 
             BPTreeRecord_Final( record->first_child );
-//            printf("\nclean: %d\n", record->child_count);
-        }
     }
 
     // Change first child for parent
@@ -125,4 +122,63 @@ void *BPTreeRecord_AddRecord( BPTreeRecord *parent ) {
     }
     return rec;
 }
+
+void *BPTreeRecord_InsertRecordAfter( BPTreeRecord *after_record ) {
+    if ( after_record == NULL ) {
+        perror("Insert after record is NULL");
+        return NULL;
+    }
+    BPTreeRecord *parent = after_record->parent;
+
+    BPTreeRecord *rec = BPTreeRecord_Init();
+    if ( rec == NULL )
+        return NULL;
+
+    if ( after_record->next_neighbor != NULL ) {
+        rec->next_neighbor = after_record->next_neighbor;
+    }
+
+    rec->prev_neighbor = after_record;
+    after_record->next_neighbor = rec;
+
+    if ( parent != NULL ) {
+        rec->parent = parent;
+        if ( parent->last_child == after_record ) {
+            parent->last_child = rec;
+        }
+        parent->child_count += 1;
+    }
+
+    return rec;
+}
+
+void *BPTreeRecord_InsertRecordBefore( BPTreeRecord *before_record ) {
+    if ( before_record == NULL ) {
+        perror("Insert before record is NULL");
+        return NULL;
+    }
+    BPTreeRecord *parent = before_record->parent;
+
+    BPTreeRecord *rec = BPTreeRecord_Init();
+    if ( rec == NULL )
+        return NULL;
+
+    if ( before_record->prev_neighbor != NULL ) {
+        rec->prev_neighbor = before_record->prev_neighbor;
+    }
+
+    rec->next_neighbor = before_record;
+    before_record->prev_neighbor = rec;
+
+    if ( parent != NULL ) {
+        rec->parent = parent;
+        if ( parent->first_child == before_record ) {
+            parent->first_child = rec;
+        }
+        parent->child_count += 1;
+    }
+
+    return rec;
+}
+
 

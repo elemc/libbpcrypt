@@ -40,6 +40,8 @@ extern void *BPTree_Init();
 extern void BPTree_Final( BPTree *tree );
 
 extern void *BPTreeRecord_AddRecord( BPTreeRecord *parent );
+extern void *BPTreeRecord_InsertRecordAfter( BPTreeRecord *after_record );
+extern void *BPTreeRecord_InsertRecordBefore( BPTreeRecord *before_record );
 
 // private
 void *BPTreeRecord_Init ();

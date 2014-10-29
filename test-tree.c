@@ -12,6 +12,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void add_childs( BPTreeRecord *parent, unsigned int count ) {
+    int j;
+    for( j = 0; j < count; j++ ) {
+        printf( "\rChild %d of %d", j, count );
+        BPTreeRecord *child = BPTreeRecord_AddRecord( parent );
+
+        if ( j%7 == 0 ) {
+            BPTreeRecord *left_child = BPTreeRecord_InsertRecordBefore( child );
+            add_childs( left_child, 10 );
+        }
+    }
+    printf("\n");
+}
+
 int main( int argc, char *argv[] ) {
 
     printf("Begin...\n");
@@ -27,10 +41,12 @@ int main( int argc, char *argv[] ) {
     int i, j;
     for ( i=0; i < 1000; i++ ) {
         BPTreeRecord *head = BPTreeRecord_AddRecord( root );
-        for( j=0; j < 100; j++ ) {
-            printf( "\rHead %d: Child %d", i, j );
-            BPTreeRecord *child = BPTreeRecord_AddRecord( head );
+
+        if ( i%7 == 0 ) {
+            BPTreeRecord *right_head = BPTreeRecord_InsertRecordAfter( head );
+            add_childs( right_head, 10 );
         }
+        add_childs( head, 1000 );
     }
 
     BPTree_Final( tree );
