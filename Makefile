@@ -20,7 +20,7 @@ bptree.o:
 
 test: shared
 	gcc -I. -L. -o test test.c -lbpcrypt -lcrypto -g
-	gcc -I. -L. -o test-tree test.c -lbpcrypt -g
+	gcc -I. -L. -o test-tree test.c -lbpcrypt -lcrypto -g
 
 macosx:
 	clang -dynamiclib -o libbpcrypt.dylib -lssl -lcrypto libbpcrypt.c bptree.c -Wno-deprecated-declarations
