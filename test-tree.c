@@ -34,6 +34,7 @@ int main( int argc, char *argv[] ) {
     }
 
     BPTree_Final( tree );
+    printf("\n");
 
     return 0;
 }

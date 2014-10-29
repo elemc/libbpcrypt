@@ -68,10 +68,15 @@ void BPTreeRecord_Final( BPTreeRecord *record ) {
     if ( record == NULL )
         return;
 
+    //printf( "\nChild count: %d\n", record->child_count );
+
     // Final childs
     if ( record->child_count > 0 ) {
-        while( record->first_child != NULL )
+//        printf("\n\tChild: %p\n", record->first_child);
+        while( record->first_child != NULL ) {
             BPTreeRecord_Final( record->first_child );
+//            printf("\nclean: %d\n", record->child_count);
+        }
     }
 
     // Change first child for parent
@@ -109,6 +114,10 @@ void *BPTreeRecord_AddRecord( BPTreeRecord *parent ) {
         if ( parent->last_child != NULL ) {
             parent->last_child->next_neighbor = rec;
             rec->prev_neighbor = parent->last_child;
+            parent->last_child = rec;
+        }
+        if ( parent->first_child == NULL ) {
+            parent->first_child = rec;
             parent->last_child = rec;
         }
 
