@@ -7,6 +7,8 @@
 /* Name: (bptree)
    Description: 
 */
+#ifndef TREE_H
+#define TREE_H
 
 #include "crypt.h"
 
@@ -34,12 +36,13 @@ struct _BPTree {
 };
 
 // public
-extern void BPTree_Init( BPTree *tree );
+extern void *BPTree_Init();
 extern void BPTree_Final( BPTree *tree );
 
 extern void *BPTreeRecord_AddRecord( BPTreeRecord *parent );
 
 // private
-void BPTreeRecord_Init ( BPTreeRecord *record );
+void *BPTreeRecord_Init ();
 void BPTreeRecord_Final( BPTreeRecord *record );
 
+#endif

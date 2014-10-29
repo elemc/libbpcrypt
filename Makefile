@@ -19,11 +19,11 @@ crypt.o:
 tree.o:
 	gcc -c -fPIC tree.c -g
 
-test: shared
-	gcc -I. -L. -o test test.c -lbpcrypt -lcrypto -g
+tests: shared
+	gcc -I. -L. -o test-crypt test-crypt.c -lbpcrypt -lcrypto -g
 	gcc -I. -L. -o test-tree test-tree.c -lbpcrypt -g
 
 macosx:
-	clang -dynamiclib -o libbpcrypt.dylib -lssl -lcrypto libbpcrypt.c libbpcrypt_tree.c -Wno-deprecated-declarations
-	clang -I. -L. -o test libbpcrypt.dylib test.c -lcrypto -Wno-deprecated-declarations
+	clang -dynamiclib -o libbpcrypt.dylib -lssl -lcrypto crypt.c tree.c -Wno-deprecated-declarations
+	clang -I. -L. -o test-crypt libbpcrypt.dylib test-crypt.c -lcrypto -Wno-deprecated-declarations
 	clang -I. -L. -o test-tree libbpcrypt.dylib test-tree.c -Wno-deprecated-declarations

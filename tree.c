@@ -20,19 +20,20 @@ void _clear_pointer_( void *ptr ) {
     ptr = NULL;
 }
 
-void BPTree_Init( BPTree *tree ) {
-    tree = calloc( sizeof(BPTree), 1 );
-    if ( tree == NULL ) {
+void *BPTree_Init() {
+    BPTree *t = calloc( sizeof(BPTree), 1 );
+    if ( t == NULL ) {
         perror("Tree object is NULL. Tree initialization failed.");
-        return;
+        return NULL;
     }
     BPTreeRecord *root = BPTreeRecord_AddRecord( NULL );
-    //BPTreeRecord_Init( root );
     if ( root == NULL ) {
-        _clear_pointer_( tree );
-        return;
+        _clear_pointer_( t );
+        perror("Error in root record initialization.");
+        return NULL;
     }
-    tree->root = root;
+    t->root = root;
+    return t;
 }
 
 void BPTree_Final( BPTree *tree ) {
@@ -42,11 +43,12 @@ void BPTree_Final( BPTree *tree ) {
     _clear_pointer_( tree );
 }
 
-void BPTreeRecord_Init( BPTreeRecord *record ) {
+void *BPTreeRecord_Init() {
+    BPTreeRecord *record;
     record = calloc( sizeof(BPTreeRecord), 1 );
     if ( record == NULL ) {
         perror("Tree record object is NULL. Record initialization failed.");
-        return;
+        return NULL;
     }
 
     record->child_count     = 0;
@@ -58,6 +60,8 @@ void BPTreeRecord_Init( BPTreeRecord *record ) {
     record->record.username = NULL;
     record->record.password = NULL;
     record->record.comment  = NULL;
+
+    return record;
 }
 
 void BPTreeRecord_Final( BPTreeRecord *record ) {
@@ -96,9 +100,8 @@ void BPTreeRecord_Final( BPTreeRecord *record ) {
 }
 
 void *BPTreeRecord_AddRecord( BPTreeRecord *parent ) {
-    BPTreeRecord *rec = NULL;
-    BPTreeRecord_Init( rec );
-    if ( rec == NULL )
+    BPTreeRecord *rec = BPTreeRecord_Init();
+    if ( rec == NULL ) 
         return NULL;
 
     if ( parent != NULL ) {
