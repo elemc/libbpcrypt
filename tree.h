@@ -12,6 +12,10 @@
 
 #include "crypt.h"
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 typedef struct _BPRecord BPRecord;
 struct _BPRecord {
     bp_buffer_t     *username;
@@ -46,5 +50,9 @@ extern void *BPTreeRecord_InsertRecordBefore( BPTreeRecord *before_record );
 // private
 void *BPTreeRecord_Init ();
 void BPTreeRecord_Final( BPTreeRecord *record );
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

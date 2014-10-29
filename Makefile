@@ -21,8 +21,8 @@ tree.o:
 
 tests: shared
 	gcc -I. -L. -o test-crypt test-crypt.c -lbpcrypt -lcrypto -g -Wno-deprecated-declarations
-	gcc -I. -L. -o test-tree test-tree.c -lbpcrypt -g
-#	g++ -I. -L. -o test-tree test-tree.cpp -lbpcrypt -g
+#	gcc -I. -L. -o test-tree test-tree.c -lbpcrypt -g
+	g++ -I. -L. -o test-tree test-tree.cpp -lbpcrypt -g
 
 macosx:
 #	clang -dynamiclib -o libbpcrypt.dylib -lssl -lcrypto crypt.c tree.c -Wno-deprecated-declarations
