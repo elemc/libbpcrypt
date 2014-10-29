@@ -12,7 +12,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void _clear_pointer_( void *ptr );
 void _clear_pointer_( void *ptr ) {
     if ( ptr == NULL )
         return;
