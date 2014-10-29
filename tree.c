@@ -135,7 +135,10 @@ void *BPTreeRecord_InsertRecordAfter( BPTreeRecord *after_record ) {
         return NULL;
 
     if ( after_record->next_neighbor != NULL ) {
-        rec->next_neighbor = after_record->next_neighbor;
+        BPTreeRecord *next = after_record->next_neighbor;
+
+        rec->next_neighbor = next;
+        next->prev_neighbor = rec;
     }
 
     rec->prev_neighbor = after_record;
@@ -164,7 +167,10 @@ void *BPTreeRecord_InsertRecordBefore( BPTreeRecord *before_record ) {
         return NULL;
 
     if ( before_record->prev_neighbor != NULL ) {
-        rec->prev_neighbor = before_record->prev_neighbor;
+        BPTreeRecord *prev = before_record->prev_neighbor;
+
+        rec->prev_neighbor = prev;
+        prev->next_neighbor = rec;
     }
 
     rec->next_neighbor = before_record;
