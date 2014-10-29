@@ -8,7 +8,7 @@
    Description: 
 */
 
-#include "bptree.h"
+#include "tree.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -26,9 +26,13 @@ void BPTree_Init( BPTree *tree ) {
         perror("Tree object is NULL. Tree initialization failed.");
         return;
     }
-    tree->root = BPTreeRecord_AddRecord( NULL );
-    if ( tree->root == NULL )
+    BPTreeRecord *root = BPTreeRecord_AddRecord( NULL );
+    //BPTreeRecord_Init( root );
+    if ( root == NULL ) {
         _clear_pointer_( tree );
+        return;
+    }
+    tree->root = root;
 }
 
 void BPTree_Final( BPTree *tree ) {
@@ -61,8 +65,8 @@ void BPTreeRecord_Final( BPTreeRecord *record ) {
         return;
 
     // Change first child for parent
-    BPTreeRecord *parent = record->parent;
-    if ( parent != NULL ) {
+    if ( record->parent != NULL ) {
+        BPTreeRecord *parent = record->parent;
         if ( record->parent->first_child == record ) {
             if ( record->next_neighbor != NULL )
                 record->parent->first_child = record->next_neighbor;
@@ -91,14 +95,14 @@ void BPTreeRecord_Final( BPTreeRecord *record ) {
     _clear_pointer_( record );
 }
 
-BPTreeRecord *BPTreeRecord_AddRecord( BPTreeRecord *parent ) {
-    BPTreeRecord *rec;
+void *BPTreeRecord_AddRecord( BPTreeRecord *parent ) {
+    BPTreeRecord *rec = NULL;
     BPTreeRecord_Init( rec );
     if ( rec == NULL )
         return NULL;
 
-    rec->parent = parent;
     if ( parent != NULL ) {
+        rec->parent = parent;
         if ( parent->last_child != NULL ) {
             parent->last_child->next_neighbor = rec;
             rec->prev_neighbor = parent->last_child;

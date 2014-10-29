@@ -1,4 +1,4 @@
-#include <libbpcrypt.h>
+#include <libbpcrypt/crypt.h>
 #include <string.h>
 #include <stdio.h>
 #include <fcntl.h>

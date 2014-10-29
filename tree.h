@@ -8,10 +8,7 @@
    Description: 
 */
 
-#ifndef BPTREE_H
-#define BPTREE_H
-
-#include "libbpcrypt.h"
+#include "crypt.h"
 
 typedef struct _BPRecord BPRecord;
 struct _BPRecord {
@@ -40,11 +37,9 @@ struct _BPTree {
 extern void BPTree_Init( BPTree *tree );
 extern void BPTree_Final( BPTree *tree );
 
-extern BPTreeRecord *BPTreeRecord_AddRecord( BPTreeRecord *parent );
+extern void *BPTreeRecord_AddRecord( BPTreeRecord *parent );
 
 // private
 void BPTreeRecord_Init ( BPTreeRecord *record );
 void BPTreeRecord_Final( BPTreeRecord *record );
-
-#endif
 

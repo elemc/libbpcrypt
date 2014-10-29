@@ -1,7 +1,7 @@
 #include <openssl/evp.h>
 #include <openssl/aes.h>
 #include <stdio.h>
-#include "libbpcrypt.h"
+#include "crypt.h"
 
 int bp_aes_init_common ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size, bp_buffer_t *aes_key, bp_buffer_t *aes_vector );
 int bp_aes_init_encrypt ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size );
