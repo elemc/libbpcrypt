@@ -26,14 +26,14 @@ int main( int argc, char *argv[] ) {
 
     int i, j;
     for ( i=0; i < 1000; i++ ) {
-       BPTreeRecord *head = BPTreeRecord_AddRecord( root );
+        BPTreeRecord *head = BPTreeRecord_AddRecord( root );
         for( j=0; j < 100; j++ ) {
             printf( "\rHead %d: Child %d", i, j );
             BPTreeRecord *child = BPTreeRecord_AddRecord( head );
         }
     }
 
-    //BPTree_Final( tree );
+    BPTree_Final( tree );
 
     return 0;
 }

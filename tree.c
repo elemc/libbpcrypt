@@ -68,6 +68,12 @@ void BPTreeRecord_Final( BPTreeRecord *record ) {
     if ( record == NULL )
         return;
 
+    // Final childs
+    if ( record->child_count > 0 ) {
+        while( record->first_child != NULL )
+            BPTreeRecord_Final( record->first_child );
+    }
+
     // Change first child for parent
     if ( record->parent != NULL ) {
         BPTreeRecord *parent = record->parent;
@@ -78,12 +84,6 @@ void BPTreeRecord_Final( BPTreeRecord *record ) {
                 record->parent->first_child = NULL;
         }
         parent->child_count -= 1;
-    }
-
-    // Final childs
-    if ( record->child_count > 0 ) {
-        BPTreeRecord_Final( record->first_child );
-        record->first_child = NULL;
     }
 
     // Relink neighbor
