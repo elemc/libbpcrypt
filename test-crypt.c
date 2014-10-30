@@ -1,12 +1,11 @@
 #include <libbpcrypt/crypt.h>
+#include <libbpcrypt/misc.h>
 #include <string.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
-
-#include <openssl/md5.h>
 
 extern int errno;
 
@@ -118,16 +117,7 @@ unsigned char *half_stage4( char *filename ) {
         perror("Buffer is empty!");
         return NULL;
     }
-    unsigned char *md5sum = calloc( sizeof(unsigned char), MD5_DIGEST_LENGTH );
-
-
-    MD5_CTX c;
-    MD5_Init( &c );
-
-    MD5_Update( &c, buffer1, buffer_len1 );
-
-    MD5_Final( md5sum, &c );
-
+    bp_buffer_t *md5sum = BP_md5_hash( buffer1, buffer_len1 );
     free( buffer1 );
     
     return md5sum;

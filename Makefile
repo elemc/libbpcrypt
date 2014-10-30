@@ -4,11 +4,11 @@ CC=cc
 
 all: shared
 
-shared: crypt.o tree.o
+shared: crypt.o tree.o misc.o old_crypt.o
 ifeq ($(UNAME_OS), Darwin)
-	$(CC) -dynamiclib -o $(NAME).dylib -lssl -lcrypto crypt.c tree.c -Wno-deprecated-declarations
+	$(CC) -dynamiclib -o $(NAME).dylib -lssl -lcrypto crypt.o tree.o misc.o old_crypt.o -Wno-deprecated-declarations
 else
-	$(CC) -shared -o $(NAME).so crypt.o tree.o -lssl -lcrypto -g
+	$(CC) -shared -o $(NAME).so crypt.o tree.o misc.o old_crypt.o -lssl -lcrypto -g
 endif
 
 static:
@@ -17,7 +17,7 @@ static:
 	ar rs $(NAME).a crypt.o tree.o
 
 clean:
-	rm -rf *.so *.a *.o *.dylib test-crypt test-tree *.dSYM
+	rm -rf *.so *.a *.o *.dylib test-crypt test-tree test-misc *.dSYM
 
 crypt.o:
 	$(CC) -c -fPIC crypt.c -g -Wno-deprecated-declarations
@@ -25,9 +25,17 @@ crypt.o:
 tree.o:
 	$(CC) -c -fPIC tree.c -g -Wno-deprecated-declarations
 
+misc.o:
+	$(CC) -c -fPIC misc.c -g -Wno-deprecated-declarations
+
+old_crypt.o:
+	$(CC) -c -fPIC old_crypt.c -g -Wno-deprecated-declarations
+
+
 tests: shared
 	$(CC) -I. -L. -o test-crypt test-crypt.c -lbpcrypt -lcrypto -g -Wno-deprecated-declarations
 	$(CC) -I. -L. -o test-tree test-tree.c -lbpcrypt -g
+	$(CC) -I. -L. -o test-misc test-misc.c -lbpcrypt -g
 
 macosx:
 	clang -dynamiclib -o libbpcrypt.dylib -lssl -lcrypto crypt.c tree.c -Wno-deprecated-declarations
