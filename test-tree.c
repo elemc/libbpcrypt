@@ -174,11 +174,14 @@ int main( int argc, char *argv[] ) {
         add_childs( head, 100 );
     }
 
+#if defined(__linux) || defined(__APPLE__)
     printf("\nMemory allocated: %llu\n", memory_count);
     BPTree_Final( tree );
     printf("Memory count after final: %llu\n", memory_count);
     if ( memory_count == MEMORY_CLEAN ) 
         printf("Memory is clean. OK!\n");
-
+#else
+    BPTree_Final( tree );
+#endif
     return 0;
 }
