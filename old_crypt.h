@@ -11,7 +11,7 @@
 #ifndef OLD_CRYPT_H
 #define OLD_CRYPT_H
 
-#include "crypt.h"
+#include "misc.h"
 
 #ifdef __cplusplus
 extern "C"{

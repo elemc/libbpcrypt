@@ -10,7 +10,7 @@
 #ifndef TREE_H
 #define TREE_H
 
-#include "crypt.h"
+#include "misc.h"
 
 #ifdef __cplusplus
 extern "C"{
