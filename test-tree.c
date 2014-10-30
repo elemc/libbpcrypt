@@ -135,6 +135,97 @@ void my_free_hook ( void *ptr, void *caller ) {
 
     memory_count -= 1;
 }
+
+#elif __FreeBSD__
+#include <dlfcn.h> 
+/*HOOKS IMPLEMENTATION*/ 
+#define PARENT_FRAME 0x01 
+
+#define MEMORY_CLEAN 1
+
+void *(*__malloc)(size_t size); 
+void *(*__malloc_hook)(size_t size, const void *caller); 
+void *(*__cur_malloc_hook)(size_t size, const void *caller); 
+
+void *(*__calloc)(size_t num, size_t size); 
+void *(*__calloc_hook)(size_t num, size_t size, const void *caller); 
+void *(*__cur_calloc_hook)(size_t num, size_t size, const void *caller); 
+
+void (*__free)(void *ptr); 
+void (*__free_hook)(void *ptr, const void *caller); 
+void (*__cur_free_hook)(void *ptr, const void *caller); 
+
+void *malloc(size_t size){ 
+    const void *caller = __builtin_return_address(PARENT_FRAME); 
+    __malloc = dlsym(RTLD_NEXT, "malloc"); 
+                 
+    if(__malloc_hook) 
+        return __malloc_hook(size, caller); 
+
+    return __malloc(size); 
+} 
+
+void *calloc(size_t num, size_t size) {
+    const void *caller = __builtin_return_address(PARENT_FRAME); 
+    __calloc = dlsym(RTLD_NEXT, "calloc"); 
+             
+    if(__calloc_hook) 
+        return __calloc_hook(num, size, caller); 
+
+    return __calloc(num, size); 
+}
+
+void free( void *ptr ) {
+    const void *caller = __builtin_return_address(PARENT_FRAME);
+    __free = dlsym(RTLD_NEXT, "free");
+
+    if (__free_hook)
+        __free_hook( ptr, caller );
+    else
+        __free( ptr );
+}
+
+/*IMPLEMENTATION ENDS AND USER APP CODE BEGINS*/ 
+
+void *my_malloc_hook(size_t size, const void *caller){ 
+    /*protecting our hook's printf from endless recursion*/ 
+    __cur_malloc_hook = __malloc_hook; 
+    __malloc_hook = NULL; 
+    
+    memory_count += 1;
+
+    __malloc_hook = __cur_malloc_hook; 
+    return __malloc(size); 
+} 
+
+void *my_calloc_hook(size_t num, size_t size, const void *caller){ 
+    /*protecting our hook's printf from endless recursion*/ 
+    __cur_calloc_hook = __calloc_hook; 
+    __calloc_hook = NULL; 
+             
+    memory_count += 1;             
+
+    __calloc_hook = __cur_calloc_hook; 
+                     
+    return __calloc(num, size); 
+} 
+
+void my_free_hook( void *ptr, const void *caller ) {
+    __cur_free_hook = __free_hook;
+    __free_hook = NULL;
+
+    memory_count -= 1;
+
+    __free_hook = __cur_free_hook;
+    __free( ptr );
+}
+
+void my_init_hooks() {
+    __malloc_hook = my_malloc_hook;
+    __calloc_hook = my_calloc_hook;
+    __free_hook = my_free_hook;
+}
+
 #endif
 
 void add_childs( BPTreeRecord *parent, unsigned int count ) {
@@ -157,6 +248,8 @@ int main( int argc, char *argv[] ) {
     my_malloc_init();
 #elif __linux
     malloc_hook_active = 1;
+#elif __FreeBSD__
+    my_init_hooks();
 #endif
 
     BPTree *tree = BPTree_Init();
@@ -173,15 +266,15 @@ int main( int argc, char *argv[] ) {
         }
         add_childs( head, 100 );
     }
-
-#if defined(__linux) || defined(__APPLE__)
-    printf("\nMemory allocated: %llu\n", memory_count);
+#if defined(__linux) || defined(__APPLE__) || defined(__FreeBSD__)
+    printf("\nMemory allocated: %lu\n", memory_count);
     BPTree_Final( tree );
-    printf("Memory count after final: %llu\n", memory_count);
+    printf("Memory count after final: %lu\n", memory_count);
     if ( memory_count == MEMORY_CLEAN ) 
         printf("Memory is clean. OK!\n");
 #else
     BPTree_Final( tree );
+    printf("\n");
 #endif
     return 0;
 }
