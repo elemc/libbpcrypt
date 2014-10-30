@@ -30,12 +30,10 @@ bp_buffer_t *BP_to_hex( bp_buffer_t *buffer, bp_size_t buffer_size, bp_size_t *h
     *hex_size = buffer_size * 2 + 1;
     bp_buffer_t *result_hex = calloc( sizeof( bp_buffer_t ), *hex_size );
     
-    printf( "Buffer size is %d and hex size is %d\n", buffer_size, *hex_size );
     int i;
     for ( i = 0; i < buffer_size; i++ ) 
         sprintf( (char *)(result_hex+i*2), "%02x", buffer[i]);
     result_hex[*hex_size - 1] = '\0';
-    //printf( "Result: \"%s\"\n", result_hex );
 
     return result_hex;
 }
