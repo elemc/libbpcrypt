@@ -26,11 +26,7 @@ tree.o:
 
 tests: shared
 	gcc -I. -L. -o test-crypt test-crypt.c -lbpcrypt -lcrypto -g -Wno-deprecated-declarations
-ifeq ($(UNAME_OS), Darwin)
-	gcc -I. -L. -o test-tree test-tree-macos.c -lbpcrypt -g
-else
 	gcc -I. -L. -o test-tree test-tree.c -lbpcrypt -g
-endif
 
 macosx:
 	clang -dynamiclib -o libbpcrypt.dylib -lssl -lcrypto crypt.c tree.c -Wno-deprecated-declarations
