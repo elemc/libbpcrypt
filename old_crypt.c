@@ -22,21 +22,15 @@ bp_buffer_t *hex_hash_key( bp_buffer_t *key, bp_size_t key_size ) {
 }
 
 bp_buffer_t *get_aes_key_from_password( bp_buffer_t *hex_hash_key ) {
-    bp_buffer_t *b_key = calloc( sizeof( bp_buffer_t ), 17 );
+    bp_buffer_t *b_key = calloc( sizeof( bp_buffer_t ), 16 );
     memcpy( (void *)b_key, hex_hash_key, 16 );
-
-    bp_buffer_t *last = (b_key+16);
-    *last = '\0';
 
     return b_key;
 }
 
 bp_buffer_t *get_aes_iv_from_password( bp_buffer_t *hex_hash_key ) {
-    bp_buffer_t *b_iv = calloc( sizeof( bp_buffer_t ), 17 );
+    bp_buffer_t *b_iv = calloc( sizeof( bp_buffer_t ), 16 );
     memcpy( (void *)b_iv, hex_hash_key+16, 16 );
-
-    bp_buffer_t *last = (b_iv+16);
-    *last = '\0';
 
     return b_iv;
 }
@@ -178,6 +172,11 @@ bp_buffer_t *old_decrypt_buffer( bp_buffer_t *buffer,    bp_size_t buffer_size,
 
         i += 16;
     }
+
+    free( b_key );
+    free( b_iv );
+    free( hash_key );
+
 
     return cipher_buffer;
  }

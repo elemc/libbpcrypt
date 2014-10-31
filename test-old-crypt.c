@@ -83,5 +83,11 @@ int main( int argc, char *argv[] ) {
     write( wd, clean_file_content, cfc_size );
     close( wd );
 
+    free( test1 );
+    free( detest1 );
+    free( file_path );
+    free( file_content );
+    free( clean_file_content );
+
     return 0;
 }
