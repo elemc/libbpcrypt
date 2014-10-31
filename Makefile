@@ -17,7 +17,7 @@ static:
 	ar rs $(NAME).a crypt.o tree.o
 
 clean:
-	rm -rf *.so *.a *.o *.dylib test-crypt test-tree test-misc *.dSYM
+	rm -rf *.so *.a *.o *.dylib test-crypt test-tree test-misc test-old-crypt default.xml *.dSYM
 
 crypt.o:
 	$(CC) -c -fPIC crypt.c -g -Wno-deprecated-declarations
@@ -36,6 +36,7 @@ tests: shared
 	$(CC) -I. -L. -o test-crypt test-crypt.c -lbpcrypt -lcrypto -g -Wno-deprecated-declarations
 	$(CC) -I. -L. -o test-tree test-tree.c -lbpcrypt -g
 	$(CC) -I. -L. -o test-misc test-misc.c -lbpcrypt -g
+	$(CC) -I. -L. -o test-old-crypt test-old-crypt.c -lbpcrypt -g
 
 macosx:
 	clang -dynamiclib -o libbpcrypt.dylib -lssl -lcrypto crypt.c tree.c -Wno-deprecated-declarations
