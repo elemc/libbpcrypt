@@ -50,15 +50,17 @@ void *BPTreeRecord_Init() {
         return NULL;
     }
 
-    record->child_count     = 0;
-    record->first_child     = NULL;
-    // record->last_child      = NULL;
-    record->next_neighbor   = NULL;
-    record->prev_neighbor   = NULL;
-    record->parent          = NULL;
-    record->record.username = NULL;
-    record->record.password = NULL;
-    record->record.comment  = NULL;
+    record->child_count         = 0;
+    record->first_child         = NULL;
+    // record->last_child       = NULL;
+    record->next_neighbor       = NULL;
+    record->prev_neighbor       = NULL;
+    record->parent              = NULL;
+    record->record.username     = NULL;
+    record->record.password     = NULL;
+    record->record.type         = BP_RECORD_PASSWORD;
+    record->record.data         = NULL;
+    record->record.data_size    = 0;
 
     return record;
 }
@@ -95,7 +97,7 @@ void BPTreeRecord_Final( BPTreeRecord *record ) {
     // Clean BPRecord
     _clear_pointer_( record->record.username );
     _clear_pointer_( record->record.password );
-    _clear_pointer_( record->record.comment );
+    _clear_pointer_( record->record.data );
 
     _clear_pointer_( record );
 }
@@ -185,5 +187,4 @@ void *BPTreeRecord_InsertRecordBefore( BPTreeRecord *before_record ) {
 
     return rec;
 }
-
 

@@ -16,11 +16,22 @@
 extern "C"{
 #endif 
 
+typedef enum _BPRecordType {
+    BP_RECORD_PASSWORD      = 0,
+    BP_RECORD_TEXT          = 1,
+    BP_RECORD_FILE          = 2,
+} BPRecordType;
+
 typedef struct _BPRecord BPRecord;
 struct _BPRecord {
+    bp_buffer_t     *name;
     bp_buffer_t     *username;
     bp_buffer_t     *password;
-    bp_buffer_t     *comment;
+
+    BPRecordType    type;
+
+    bp_buffer_t     *data;
+    bp_size_t       data_size;
 };
 
 typedef struct _BPTreeRecord BPTreeRecord;
