@@ -84,6 +84,7 @@ int main( int argc, char *argv[] ) {
     close( wd );
 
     free( test1 );
+    free( hex_test1 );
     free( detest1 );
     free( file_path );
     free( file_content );
