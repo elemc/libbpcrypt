@@ -1,0 +1,16 @@
+// -*- C -*-
+/* ------------------------------------ */
+/* C common header for project          */
+/* Author: Alexei Panov <me@elemc.name> */
+/* ------------------------------------ */
+/* Project: libbpcrypt
+   Description:
+*/
+
+#ifndef LIBBPCRYPT_CONFIG_H
+#define LIBBPCRYPT_CONFIG_H
+
+#cmakedefine DEBUG
+#cmakedefine WITH_OLD_CRYPT
+
+#endif

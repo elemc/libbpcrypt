@@ -155,10 +155,6 @@ int main ( int argc, char *argv[] ) {
     cipher = encrypt_buffer ( buf, buf_size, key, key_size, &cipher_len );
     clean = decrypt_buffer ( cipher, cipher_len, key, key_size, &clean_len );
     
-    //printf("Original text \"%s\" (%d)\n", buf, buf_size);
-    //printf("Encrypted text \"%s\" (%d)\n", cipher, cipher_len );
-    //printf("Decrypted text \"%s\" (%d)\n", clean, clean_len );
-
     free( cipher );
 
     int cmpresult = strncmp( (char *)buf, (char *)clean, clean_len );

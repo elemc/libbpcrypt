@@ -28,7 +28,6 @@ bp_buffer_t *read_file( bp_buffer_t *filename, bp_size_t *filesize ) {
     bp_buffer_t *all_buffer = NULL;
 
     while ( (read_len = read( rd, read_buffer, read_buf_size )) > 0 ) {
-        //all_len += read_len;
         all_buffer = realloc( all_buffer, (all_len + read_len) * sizeof(bp_buffer_t) );
         memcpy( all_buffer + all_len, read_buffer, read_len );
         all_len += read_len;
@@ -59,11 +58,9 @@ int main( int argc, char *argv[] ) {
     // Stage 1. Crypt.
     bp_size_t test1_size;
     bp_buffer_t *test1 = old_encrypt_buffer( (bp_buffer_t *)test_buffer, test_buffer_size, (bp_buffer_t *)test_key, test_key_size, &test1_size );
-    //printf("[DEBUG] test=%s(%d)\n", test1, test1_size);
 
     bp_size_t hex_test1_size;
     bp_buffer_t *hex_test1 = BP_to_hex( test1, test1_size, &hex_test1_size );
-    //printf("[DEBUG] crypt buffer HEX: \"%s\"\n", hex_test1 ); 
 
     if ( memcmp( hex_test1, hex_crypt_test, hex_test1_size ) == 0 )
         printf("Stage 1. Crypt test success. OK\n");
@@ -75,7 +72,6 @@ int main( int argc, char *argv[] ) {
     // Stage 2. Decrypt
     bp_size_t detest1_size;
     bp_buffer_t *detest1 = old_decrypt_buffer( (bp_buffer_t *)test1, test1_size, (bp_buffer_t *)test_key, test_key_size, &detest1_size );
-    //printf("[DEBUG] detest=%s(%d)\n", detest1, detest1_size);
 
     if ( memcmp( detest1, test_buffer, detest1_size ) == 0 )
         printf("Stage 2. Decrypt test success. OK\n");
@@ -94,8 +90,6 @@ int main( int argc, char *argv[] ) {
     char *basket_file = "/.basketpwd/default.cxml";
     bp_buffer_t *file_path = calloc( sizeof( bp_buffer_t ), strlen(home_dir) + strlen(basket_file) + 1 );
     sprintf( (char *)file_path, "%s%s", home_dir, basket_file );
-
-    //printf("[DEBUG] File for reading: %s\n", file_path );
 
     bp_size_t file_size;
     bp_buffer_t *file_content = read_file( file_path, &file_size );
