@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <openssl/md5.h>
-#include <error.h>
+#include <err.h>
 #include <errno.h>
 #include <string.h>
 #include <fcntl.h>
@@ -37,6 +37,7 @@ extern bp_buffer_t *BP_to_hex( bp_buffer_t *buffer, bp_size_t buffer_size, bp_si
 extern bp_buffer_t *BP_read_file( const char *filename, bp_size_t *file_size );
 extern bp_buffer_t *BP_copy_ptr( bp_buffer_t *ptr );
 extern bp_buffer_t *BP_ncopy_ptr( bp_buffer_t *ptr, bp_size_t size );
+extern void BP_error( int code, int eval, const char *fmt, ... );
 
 #ifdef __cplusplus
 }

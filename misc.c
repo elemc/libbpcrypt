@@ -44,7 +44,7 @@ bp_buffer_t *BP_read_file( const char *filename, bp_size_t *file_size )
     rd = open( filename, O_RDONLY );
     if ( rd  < 0 ) {
 
-        error( 400, errno, "Read file \"%s\" failed (%d).", filename, errno );
+        BP_error( 400, errno, "Read file \"%s\" failed (%d).", filename, errno );
         return NULL;
     }
 
@@ -80,4 +80,11 @@ bp_buffer_t *BP_copy_ptr( bp_buffer_t *ptr )
 {
     bp_size_t ptr_size = strlen( ptr ) + 1;
     return BP_ncopy_ptr( ptr, ptr_size );
+}
+
+void BP_error( int code, int eval, const char *fmt, ... )
+{
+    va_list args;
+    err( eval, fmt, args );
+    exit( code );
 }
