@@ -19,7 +19,7 @@ int main( int argc, char *argv[] )
     sprintf( (char *)file_path, "%s%s", home_dir, basket_file );
 
     bp_size_t file_size;
-    bp_buffer_t *file_content = BP_read_file( file_path, &file_size );
+    bp_buffer_t *file_content = BP_read_file( (const char *)file_path, &file_size );
     
     free( file_path );
 
@@ -39,7 +39,7 @@ int main( int argc, char *argv[] )
     char *test_key = "3510";
     bp_size_t test_key_size = strlen( test_key );
 
-    BPTree *tree = BP_xml_old_load_file( "test.cxml", test_key, test_key_size );
+    BPTree *tree = BP_xml_old_load_file( "test1.cxml", (bp_buffer_t *)test_key, test_key_size );
 
     if ( tree == NULL ) {        
         BP_error( 602, 602, "Error!" );

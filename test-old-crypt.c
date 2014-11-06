@@ -64,7 +64,7 @@ int main( int argc, char *argv[] ) {
     sprintf( (char *)file_path, "%s%s", home_dir, basket_file );
 
     bp_size_t file_size;
-    bp_buffer_t *file_content = BP_read_file( file_path, &file_size );
+    bp_buffer_t *file_content = BP_read_file( (const char *)file_path, &file_size );
     bp_buffer_t *clean_file_content = NULL;
     bp_size_t cfc_size;
     

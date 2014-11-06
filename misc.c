@@ -78,7 +78,7 @@ bp_buffer_t *BP_ncopy_ptr( bp_buffer_t *ptr, bp_size_t size )
 
 bp_buffer_t *BP_copy_ptr( bp_buffer_t *ptr )
 {
-    bp_size_t ptr_size = strlen( ptr ) + 1;
+    bp_size_t ptr_size = strlen( (const char *)ptr ) + 1;
     return BP_ncopy_ptr( ptr, ptr_size );
 }
 

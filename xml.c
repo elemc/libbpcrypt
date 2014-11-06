@@ -104,7 +104,7 @@ BPTree *BP_xml_old_load_file( const char *filename, bp_buffer_t *key, bp_size_t 
     }
     free( crypt_data );
 
-    doc = xmlReadMemory( decrypt_data, decrypt_data_size, NULL, NULL, 0 );
+    doc = xmlReadMemory( (const char *)decrypt_data, decrypt_data_size, NULL, NULL, 0 );
     if ( doc == NULL ) {
         BP_error( 503, 503, "Error xml parse decrypt data from file \"%s\" (%d)", filename, errno );
         return NULL;
@@ -132,5 +132,5 @@ BPTree *BP_xml_old_load_file( const char *filename, bp_buffer_t *key, bp_size_t 
 // load file with new crypt to tree
 BPTree *BP_xml_load_file( const char *filename, bp_buffer_t *key, bp_size_t key_size )
 {
-
+    return NULL;
 }

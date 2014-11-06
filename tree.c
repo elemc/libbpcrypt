@@ -193,7 +193,7 @@ void *BPTreeRecord_InsertRecordBefore( BPTreeRecord *before_record ) {
 void BPTreeRecord_RaiseNULL( BPTreeRecord *record )
 {
     if ( record == NULL ) {
-        error( 321, 321, "Record is null" );
+        BP_error( 321, 321, "Record is null" );
         return;
     }
 }

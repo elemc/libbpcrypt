@@ -19,6 +19,7 @@
 #include <errno.h>
 #include <string.h>
 #include <fcntl.h>
+#include <unistd.h>
 #include "config.h"
 
 #ifdef __cplusplus
