@@ -90,12 +90,14 @@ void BP_error( int code, int eval, const char *fmt, ... )
 
     char *msg = calloc( sizeof( char ), 1024 );
     if ( msg != NULL ) {
-        int size = vsprintf( msg, fmt, ap );
-        //msg = realloc( msg, sizeof( char ) * size );
+        // int size = 
+        vsprintf( msg, fmt, ap );
+#if defined(_WIN32) || defined(_WIN64)
+        printf( "%s\n", msg );
+#else
         err( eval, "%s", msg );
+#endif
         free( msg );
     }
     va_end( ap );
-
-    //exit( code );
 }

@@ -11,7 +11,7 @@
 #include <libbpcrypt/tree.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/mman.h>
+//#include <sys/mman.h>
 #include <unistd.h>
 
 uint64_t memory_count;
@@ -255,7 +255,7 @@ int main( int argc, char *argv[] ) {
     BPTree *tree = BPTree_Init();
     BPTreeRecord *root = tree->root;
 
-    int i, j;
+    int i;
     for ( i=0; i < 100; i++ ) {
         BPTreeRecord *head = BPTreeRecord_AddRecord( root );
         printf( "\rHead %d", i );

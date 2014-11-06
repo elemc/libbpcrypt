@@ -11,22 +11,24 @@
 #ifndef MISC_H
 #define MISC_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <openssl/md5.h>
-#include <err.h>
 #include <errno.h>
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include "config.h"
 
-#ifdef __cplusplus
-extern "C"{
-#endif 
-
+#if !defined(_WIN32) && !defined(_WIN64)
+#include <err.h>
 extern int errno;
+#endif
 
 #define BP_READ_BLOCK_SIZE 2048
 

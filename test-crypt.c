@@ -7,8 +7,6 @@
 #include <stdlib.h>
 #include <errno.h>
 
-extern int errno;
-
 char *decrypt_file_name( char *filename, bp_size_t *dfn_size ) {
     char add_file_name[] = ".decrypt";
 
