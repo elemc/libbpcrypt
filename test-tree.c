@@ -17,7 +17,7 @@
 uint64_t memory_count;
 
 #ifdef __APPLE__
-
+#include <sys/mman.h>
 #define MEMORY_CLEAN 1
 
 #include <malloc/malloc.h>
