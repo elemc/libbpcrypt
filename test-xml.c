@@ -39,8 +39,7 @@ int main( int argc, char *argv[] )
     char *test_key = "3510";
     bp_size_t test_key_size = strlen( test_key );
 
-    BPTree *tree = BP_xml_old_load_file( "test1.cxml", (bp_buffer_t *)test_key, test_key_size );
-
+    BPTree *tree = BP_xml_old_load_file( "test.cxml", (bp_buffer_t *)test_key, test_key_size );
     if ( tree == NULL ) {        
         BP_error( 602, 602, "Error!" );
         return 602;
