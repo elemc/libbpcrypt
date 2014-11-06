@@ -12,5 +12,6 @@
 
 #cmakedefine DEBUG
 #cmakedefine WITH_OLD_CRYPT
+#cmakedefine WITH_XML
 
 #endif

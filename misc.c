@@ -68,3 +68,16 @@ bp_buffer_t *BP_read_file( const char *filename, bp_size_t *file_size )
     *file_size = all_len;
     return all_buffer;
 }
+
+bp_buffer_t *BP_ncopy_ptr( bp_buffer_t *ptr, bp_size_t size )
+{
+    bp_buffer_t *new_ptr = calloc( sizeof( bp_buffer_t ), size );
+    memcpy( new_ptr, ptr, size );
+    return new_ptr;
+}
+
+bp_buffer_t *BP_copy_ptr( bp_buffer_t *ptr )
+{
+    bp_size_t ptr_size = strlen( ptr ) + 1;
+    return BP_ncopy_ptr( ptr, ptr_size );
+}

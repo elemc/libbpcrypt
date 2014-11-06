@@ -31,6 +31,7 @@ void *BPTree_Init() {
         perror("Error in root record initialization.");
         return NULL;
     }
+    BPRecord_SetType( root, BP_RECORD_ROOT );
     t->root = root;
     return t;
 }
@@ -95,6 +96,7 @@ void BPTreeRecord_Final( BPTreeRecord *record ) {
     }
 
     // Clean BPRecord
+    _clear_pointer_( record->record.name );
     _clear_pointer_( record->record.username );
     _clear_pointer_( record->record.password );
     _clear_pointer_( record->record.data );
@@ -186,5 +188,43 @@ void *BPTreeRecord_InsertRecordBefore( BPTreeRecord *before_record ) {
     }
 
     return rec;
+}
+
+void BPTreeRecord_RaiseNULL( BPTreeRecord *record )
+{
+    if ( record == NULL ) {
+        error( 321, 321, "Record is null" );
+        return;
+    }
+}
+
+void BPRecord_SetType( BPTreeRecord *record, BPRecordType type )
+{
+    BPTreeRecord_RaiseNULL( record );
+    record->record.type = type;
+}
+
+void BPRecord_SetName( BPTreeRecord *record, bp_buffer_t *name )
+{
+    BPTreeRecord_RaiseNULL( record );
+    record->record.name = BP_copy_ptr( name );
+}
+
+void BPRecord_SetFold( BPTreeRecord *record, bp_buffer_t *name )
+{
+    BPTreeRecord_RaiseNULL( record );
+
+    BPRecord_SetType( record, BP_RECORD_FOLDER );
+    BPRecord_SetName( record, name );
+}
+
+void BPRecord_SetPassword( BPTreeRecord *record, bp_buffer_t *name, bp_buffer_t *login, bp_buffer_t *password )
+{
+    BPTreeRecord_RaiseNULL( record );
+
+    BPRecord_SetType( record, BP_RECORD_PASSWORD );
+    BPRecord_SetName( record, name );
+    record->record.username = BP_copy_ptr( login );
+    record->record.password = BP_copy_ptr( password );
 }
 

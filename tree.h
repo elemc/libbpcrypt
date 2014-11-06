@@ -17,9 +17,11 @@ extern "C"{
 #endif 
 
 typedef enum _BPRecordType {
-    BP_RECORD_PASSWORD      = 0,
-    BP_RECORD_TEXT          = 1,
-    BP_RECORD_FILE          = 2,
+    BP_RECORD_ROOT          = 0,
+    BP_RECORD_FOLDER        = 1,
+    BP_RECORD_PASSWORD      = 2,
+    BP_RECORD_TEXT          = 3,
+    BP_RECORD_FILE          = 4,
 } BPRecordType;
 
 typedef struct _BPRecord BPRecord;
@@ -57,6 +59,12 @@ extern void BPTree_Final( BPTree *tree );
 extern void *BPTreeRecord_AddRecord( BPTreeRecord *parent );
 extern void *BPTreeRecord_InsertRecordAfter( BPTreeRecord *after_record );
 extern void *BPTreeRecord_InsertRecordBefore( BPTreeRecord *before_record );
+
+extern void BPRecord_SetType( BPTreeRecord *record, BPRecordType type );
+extern void BPRecord_SetName( BPTreeRecord *record, bp_buffer_t *name );
+
+extern void BPRecord_SetFold( BPTreeRecord *record, bp_buffer_t *name );
+extern void BPRecord_SetPassword( BPTreeRecord *record, bp_buffer_t *name, bp_buffer_t *login, bp_buffer_t *password );
 
 // private
 void *BPTreeRecord_Init ();

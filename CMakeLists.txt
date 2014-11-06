@@ -52,17 +52,33 @@ if ( WITH_OLD_CRYPT )
     set ( HEADERS ${HEADERS} old_crypt.h )
     set ( SOURCES ${SOURCES} old_crypt.c )
 endif ( WITH_OLD_CRYPT )
+if ( WITH_XML )
+    set ( HEADERS ${HEADERS} xml.h )
+    set ( SOURCES ${SOURCES} xml.c )
+endif ( WITH_XML )
+
 
 project (${PROJECT_NAME})
 
+set (DEP_LIB_INCLUDES           "")
+set (BUILD_PROJECT_LIBRARIES    "")
+
 find_package (OpenSSL REQUIRED)
-set (BUILD_PROJECT_LIBRARIES ${OPENSSL_LIBRARIES})
+set (BUILD_PROJECT_LIBRARIES ${BUILD_PROJECT_LIBRARIES} ${OPENSSL_LIBRARIES})
+set (DEP_LIB_INCLUDES ${DEP_LIB_INCLUDES} ${OPENSSL_INCLUDE_DIR})
+
+if ( WITH_XML )
+    find_package (LibXml2 REQUIRED)
+    set (BUILD_PROJECT_LIBRARIES ${BUILD_PROJECT_LIBRARIES} ${LIBXML2_LIBRARIES})
+    set (DEP_LIB_INCLUDES ${DEP_LIB_INCLUDES} ${LIBXML2_INCLUDE_DIR})
+endif( WITH_XML )
+
 
 configure_file (
     "${PROJECT_SOURCE_DIR}/config.h.in"
     "${PROJECT_BINARY_DIR}/config.h"
 )
-include_directories (${CMAKE_CURRENT_BINARY_DIR} ${OPENSSL_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
+include_directories (${CMAKE_CURRENT_BINARY_DIR} ${DEP_LIB_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR})
 
 source_group ("Header Files" FILES ${HEADERS})
 source_group ("Source Files" FILES ${SOURCES})
@@ -81,12 +97,6 @@ if ( APPLE )
 endif ( APPLE )
 
 # Tests section
-if ( WITH_OLD_CRYPT )
-    add_executable(test-old-crypt test-old-crypt.c)
-    target_link_libraries( test-old-crypt ${PROJECT_NAME} )
-    add_test( NAME "Old-Crypt" COMMAND test-old-crypt )
-    set_tests_properties( "Old-Crypt" PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}" )
-endif( WITH_OLD_CRYPT )
 
 add_executable(test-crypt test-crypt.c)
 add_executable(test-misc test-misc.c)
@@ -102,6 +112,20 @@ add_test( NAME "Tree" COMMAND test-tree )
 set_tests_properties( "Crypt" PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}" )
 set_tests_properties( "Misc" PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}" )
 set_tests_properties( "Tree" PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}" )
+
+if ( WITH_OLD_CRYPT )
+    add_executable(test-old-crypt test-old-crypt.c)
+    target_link_libraries( test-old-crypt ${PROJECT_NAME} )
+    add_test( NAME "Old-Crypt" COMMAND test-old-crypt )
+    set_tests_properties( "Old-Crypt" PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}" )
+endif( WITH_OLD_CRYPT )
+if ( WITH_XML )
+    add_executable(test-xml test-xml.c)
+    target_link_libraries( test-xml ${PROJECT_NAME} )
+    add_test( NAME "XML" COMMAND test-xml ~/.basketpwd/default.cxml )
+    set_tests_properties( "XML" PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}" )
+endif( WITH_XML )
+
 
 # Install section
 if ( NOT APPLE )
