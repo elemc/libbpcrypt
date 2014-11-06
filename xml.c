@@ -92,6 +92,7 @@ BPTree *BP_xml_old_load_file( const char *filename, bp_buffer_t *key, bp_size_t 
     bp_buffer_t *crypt_data = BP_read_file( filename, &crypt_data_size );
     if ( crypt_data == NULL ) {
         BP_error( 501, 501, "Error loading data from file \"%s\" (%d)", filename, errno );
+        xmlCleanupParser();
         return NULL;
     }
 
@@ -99,6 +100,7 @@ BPTree *BP_xml_old_load_file( const char *filename, bp_buffer_t *key, bp_size_t 
     bp_buffer_t *decrypt_data = old_decrypt_buffer( crypt_data, crypt_data_size, key, key_size, &decrypt_data_size );
     if ( decrypt_data == NULL ) {
         free( crypt_data );
+        xmlCleanupParser();
         BP_error( 502, 502, "Error old decrypt data from file \"%s\" (%d)", filename, errno );
         return NULL;
     }
@@ -106,6 +108,7 @@ BPTree *BP_xml_old_load_file( const char *filename, bp_buffer_t *key, bp_size_t 
 
     doc = xmlReadMemory( (const char *)decrypt_data, decrypt_data_size, NULL, NULL, 0 );
     if ( doc == NULL ) {
+        xmlCleanupParser();
         BP_error( 503, 503, "Error xml parse decrypt data from file \"%s\" (%d)", filename, errno );
         return NULL;
     }

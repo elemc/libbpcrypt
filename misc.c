@@ -9,6 +9,7 @@
 */
 
 #include "misc.h"
+#include <stdarg.h>
 
 bp_buffer_t *BP_md5_hash( bp_buffer_t *buffer, bp_size_t buffer_size ) {
 
@@ -84,7 +85,17 @@ bp_buffer_t *BP_copy_ptr( bp_buffer_t *ptr )
 
 void BP_error( int code, int eval, const char *fmt, ... )
 {
-    va_list args;
-    err( eval, fmt, args );
-    exit( code );
+    va_list ap;
+    va_start( ap, fmt );    
+
+    char *msg = calloc( sizeof( char ), 1024 );
+    if ( msg != NULL ) {
+        int size = vsprintf( msg, fmt, ap );
+        //msg = realloc( msg, sizeof( char ) * size );
+        err( eval, msg );
+        free( msg );
+    }
+    va_end( ap );
+
+    //exit( code );
 }
