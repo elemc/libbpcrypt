@@ -92,7 +92,7 @@ void BP_error( int code, int eval, const char *fmt, ... )
     if ( msg != NULL ) {
         int size = vsprintf( msg, fmt, ap );
         //msg = realloc( msg, sizeof( char ) * size );
-        err( eval, msg );
+        err( eval, "%s", msg );
         free( msg );
     }
     va_end( ap );
