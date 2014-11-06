@@ -38,3 +38,33 @@ bp_buffer_t *BP_to_hex( bp_buffer_t *buffer, bp_size_t buffer_size, bp_size_t *h
     return result_hex;
 }
 
+bp_buffer_t *BP_read_file( bp_buffer_t *filename, bp_size_t filename_size, bp_size_t *file_size )
+{
+    int rd;
+    rd = open( (const char *)filename, O_RDONLY );
+    if ( rd  < 0 ) {
+
+        error( 400, errno, "Read file \"%s\" failed (%d).", filename, errno );
+        return NULL;
+    }
+
+    ssize_t read_len, all_len = 0;
+    ssize_t read_buf_size = BP_READ_BLOCK_SIZE;
+   
+    bp_buffer_t *read_buffer = calloc( sizeof( bp_buffer_t), read_buf_size );
+    bp_buffer_t *all_buffer = NULL;
+
+    while ( (read_len = read( rd, read_buffer, read_buf_size )) > 0 ) {
+        all_buffer = realloc( all_buffer, (all_len + read_len) * sizeof(bp_buffer_t) );
+        memcpy( all_buffer + all_len, read_buffer, read_len );
+        all_len += read_len;
+        if ( read_len != read_buf_size )
+            break;
+    }
+
+    close(rd);
+    free( read_buffer );
+
+    *file_size = all_len;
+    return all_buffer;
+}
