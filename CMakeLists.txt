@@ -23,6 +23,7 @@ endif (NOT DEBUG)
 if ( NOT APPLE )
     set( LIB_INSTALL_DIR lib${LIB_SUFFIX} )
     set( INCLUDE_INSTALL_DIR include )
+    set( CMAKE_SKIP_BUILD_RPATH ON )
 else ( NOT APPLE )
     if ( NOT CMAKE_MACOSX_RPATH )
         set( CMAKE_MACOSX_RPATH 0 )
@@ -66,8 +67,6 @@ include_directories (${CMAKE_CURRENT_BINARY_DIR} ${OPENSSL_INCLUDE_DIR} ${CMAKE_
 source_group ("Header Files" FILES ${HEADERS})
 source_group ("Source Files" FILES ${SOURCES})
 
-                
-
 # Library
 add_library( ${PROJECT_NAME} ${SOURCES} ${HEADERS} )
 target_link_libraries (${PROJECT_NAME} ${BUILD_PROJECT_LIBRARIES})
@@ -86,6 +85,7 @@ if ( WITH_OLD_CRYPT )
     add_executable(test-old-crypt test-old-crypt.c)
     target_link_libraries( test-old-crypt ${PROJECT_NAME} )
     add_test( NAME "Old-Crypt" COMMAND test-old-crypt )
+    set_tests_properties( "Old-Crypt" PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}" )
 endif( WITH_OLD_CRYPT )
 
 add_executable(test-crypt test-crypt.c)
@@ -98,6 +98,10 @@ target_link_libraries( test-tree ${PROJECT_NAME} )
 add_test( NAME "Crypt" COMMAND test-crypt Makefile Makefile.1 )
 add_test( NAME "Misc" COMMAND test-misc )
 add_test( NAME "Tree" COMMAND test-tree )
+
+set_tests_properties( "Crypt" PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}" )
+set_tests_properties( "Misc" PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}" )
+set_tests_properties( "Tree" PROPERTIES ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}" )
 
 # Install section
 if ( NOT APPLE )
