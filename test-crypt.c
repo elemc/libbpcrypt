@@ -19,39 +19,10 @@ char *decrypt_file_name( char *filename, bp_size_t *dfn_size ) {
     return temp_file_name;
 }
 
-bp_buffer_t *read_file( char *filename, bp_size_t *filesize ) {
-    int rd;
-    rd = open ( filename, O_RDONLY );
-    if ( rd < 0 ) {
-        perror( strerror( errno ) );
-        return NULL;
-    }
-    ssize_t read_len, all_len = 0;
-    ssize_t read_buf_size = 2048;
-    bp_buffer_t *read_buffer = malloc( read_buf_size * sizeof( bp_buffer_t ) );
-    bp_buffer_t *all_buffer = NULL;
-
-    while ( (read_len = read( rd, read_buffer, read_buf_size )) > 0 ) {
-        //all_len += read_len;
-        all_buffer = realloc( all_buffer, (all_len + read_len) * sizeof(bp_buffer_t) );
-        memcpy( all_buffer + all_len, read_buffer, read_len );
-        all_len += read_len;
-        if ( read_len != read_buf_size )
-            break;
-    }
-
-    close(rd);
-
-    free( read_buffer );
-
-    *filesize = all_len;
-    return all_buffer;
-}
-
 int stage2 ( char *file_for_read, char *file_for_write, bp_buffer_t *key, bp_size_t key_size ) {
     printf("Second stage. Files\n"); 
     bp_size_t buffer_len;
-    bp_buffer_t *buffer = read_file ( file_for_read, &buffer_len );
+    bp_buffer_t *buffer = BP_read_file ( file_for_read, &buffer_len );
     if ( buffer == NULL )
         return 2;
 
@@ -82,7 +53,7 @@ int stage3 ( char *file_for_read, bp_buffer_t *key, bp_size_t key_size ) {
     printf("Decrypt file name is %s\n", file_for_write);
 
     bp_size_t buffer_len;
-    bp_buffer_t *buffer = read_file ( file_for_read, &buffer_len );
+    bp_buffer_t *buffer = BP_read_file ( file_for_read, &buffer_len );
     if ( buffer == NULL ) {
         perror("Buffer is empty");
         return 3;
@@ -111,7 +82,7 @@ unsigned char *half_stage4( char *filename ) {
     printf("Try to read '%s'\n", filename );
 
     bp_size_t buffer_len1;
-    bp_buffer_t *buffer1 = read_file ( filename, &buffer_len1 );
+    bp_buffer_t *buffer1 = BP_read_file ( filename, &buffer_len1 );
 
     if ( buffer1 == NULL ) {
         perror("Buffer is empty!");

@@ -44,6 +44,7 @@ int main ( int argc, char *argv[] ) {
         printf("BP_to_hex test fail. Fail!\n");
         return_result = 200;
     }
+    free( hex_buffer );
 
     char *test_file = "default-t.cxml";
 
@@ -59,7 +60,7 @@ int main ( int argc, char *argv[] ) {
         close( wd );
 
         int test_msg_size;
-        bp_buffer_t *test_msg = BP_read_file( test_file, strlen(test_file), &test_msg_size );
+        bp_buffer_t *test_msg = BP_read_file( test_file, &test_msg_size );
 
         int result = 0;
         result += memcmp(test_msg_text, test_msg, test_msg_size);        

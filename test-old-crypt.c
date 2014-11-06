@@ -15,34 +15,6 @@
 #include <errno.h>
 #include <unistd.h>
 
-bp_buffer_t *read_file( bp_buffer_t *filename, bp_size_t *filesize ) {
-    int rd;
-    rd = open ( (const char *)filename, O_RDONLY );
-    if ( rd < 0 ) {
-        perror( strerror( errno ) );
-        return NULL;
-    }
-    ssize_t read_len, all_len = 0;
-    ssize_t read_buf_size = 2048;
-    bp_buffer_t *read_buffer = malloc( read_buf_size * sizeof( bp_buffer_t ) );
-    bp_buffer_t *all_buffer = NULL;
-
-    while ( (read_len = read( rd, read_buffer, read_buf_size )) > 0 ) {
-        all_buffer = realloc( all_buffer, (all_len + read_len) * sizeof(bp_buffer_t) );
-        memcpy( all_buffer + all_len, read_buffer, read_len );
-        all_len += read_len;
-        if ( read_len != read_buf_size )
-            break;
-    }
-
-    close(rd);
-
-    free( read_buffer );
-
-    *filesize = all_len;
-    return all_buffer;
-}
-
 int main( int argc, char *argv[] ) {
 
     int return_result = 0;
@@ -92,7 +64,7 @@ int main( int argc, char *argv[] ) {
     sprintf( (char *)file_path, "%s%s", home_dir, basket_file );
 
     bp_size_t file_size;
-    bp_buffer_t *file_content = read_file( file_path, &file_size );
+    bp_buffer_t *file_content = BP_read_file( file_path, &file_size );
     bp_buffer_t *clean_file_content = NULL;
     bp_size_t cfc_size;
     

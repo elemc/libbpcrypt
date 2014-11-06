@@ -34,7 +34,7 @@ typedef int32_t bp_size_t;
 
 extern bp_buffer_t *BP_md5_hash( bp_buffer_t *buffer, bp_size_t buffer_size );
 extern bp_buffer_t *BP_to_hex( bp_buffer_t *buffer, bp_size_t buffer_size, bp_size_t *hex_size);
-extern bp_buffer_t *BP_read_file( bp_buffer_t *filename, bp_size_t filename_size, bp_size_t *file_size );
+extern bp_buffer_t *BP_read_file( const char *filename, bp_size_t *file_size );
 
 #ifdef __cplusplus
 }

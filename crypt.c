@@ -22,7 +22,7 @@ bp_buffer_t *encrypt_buffer( bp_buffer_t *buffer, bp_size_t buffer_size,
     bp_size_t cipher_size = buffer_size + AES_BLOCK_SIZE; // - 1;
     bp_size_t final_size = 0;
     
-    bp_buffer_t *cipher_buffer = malloc( cipher_size );
+    bp_buffer_t *cipher_buffer = calloc( sizeof( bp_buffer_t), cipher_size );
 
     /* allows reusing of 'e' for multiple encryption cycles */ //FIXME: WTF?
     EVP_EncryptInit_ex ( &en_context, NULL, NULL, NULL, NULL );
@@ -54,7 +54,8 @@ bp_buffer_t *decrypt_buffer( bp_buffer_t *buffer, bp_size_t buffer_size,
     }
 
     bp_size_t clean_size = buffer_size, final_size = 0;
-    bp_buffer_t *clean_buffer = malloc(clean_size + AES_BLOCK_SIZE);
+    bp_size_t cb_size = clean_size;
+    bp_buffer_t *clean_buffer = calloc( sizeof( bp_buffer_t), cb_size );
   
     EVP_DecryptInit_ex( &de_context, NULL, NULL, NULL, NULL);
     EVP_DecryptUpdate( &de_context, clean_buffer, &clean_size, buffer, buffer_size );
