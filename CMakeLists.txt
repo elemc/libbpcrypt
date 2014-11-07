@@ -78,6 +78,15 @@ configure_file (
     "${PROJECT_SOURCE_DIR}/config.h.in"
     "${PROJECT_BINARY_DIR}/config.h"
 )
+
+if ( WITH_OLD_CRYPT )
+    message( STATUS "Test CXML file coping" )
+    configure_file( "${PROJECT_SOURCE_DIR}/test.cxml"
+                    "${PROJECT_BINARY_DIR}/test.cxml"
+                    COPYONLY
+    )
+endif ( WITH_OLD_CRYPT )
+
 include_directories (${CMAKE_CURRENT_BINARY_DIR} ${DEP_LIB_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR})
 
 source_group ("Header Files" FILES ${HEADERS})

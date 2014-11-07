@@ -101,3 +101,25 @@ void BP_error( int code, int eval, const char *fmt, ... )
     }
     va_end( ap );
 }
+
+bp_buffer_t *BP_from_hex( bp_buffer_t *buffer, bp_size_t buffer_size, bp_size_t *data_size )
+{
+    *data_size = 0;
+
+    bp_buffer_t *result = calloc( sizeof( bp_buffer_t ), buffer_size / 2 );
+    bp_buffer_t *dst = result;
+
+    int i;
+
+    while ( i < buffer_size ) {
+        uint32_t value;
+        if ( sscanf( buffer, "%02x", &value ) == 1 ) {
+            buffer += 2;
+            *dst++ = value;
+            *data_size += 1;
+        }
+        i += 2;
+    }
+
+    return result;
+}
