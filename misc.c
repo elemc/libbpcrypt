@@ -109,7 +109,7 @@ bp_buffer_t *BP_from_hex( bp_buffer_t *buffer, bp_size_t buffer_size, bp_size_t 
     bp_buffer_t *result = calloc( sizeof( bp_buffer_t ), buffer_size / 2 );
     bp_buffer_t *dst = result;
 
-    int i;
+    int i = 0;
 
     while ( i < buffer_size ) {
         uint32_t value;
