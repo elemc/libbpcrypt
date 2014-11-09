@@ -22,8 +22,8 @@ crypt_encrypt_buffer( PyObject *self, PyObject *args )
 
     bp_buffer_t *result;
     bp_size_t result_size;
-    result = encrypt_buffer( (bp_buffer_t *)buffer, strlen(buffer), 
-                             (bp_buffer_t *)key, strlen(key),
+    result = encrypt_buffer( (bp_buffer_t *)buffer, (bp_size_t)strlen(buffer), 
+                             (bp_buffer_t *)key, (bp_size_t)strlen(key),
                              &result_size );
 
     bp_buffer_t *null = result + result_size;
@@ -43,8 +43,8 @@ crypt_decrypt_buffer( PyObject *self, PyObject *args )
 
     bp_buffer_t *result;
     bp_size_t result_size;
-    result = decrypt_buffer( (bp_buffer_t *)buffer, strlen(buffer), 
-                             (bp_buffer_t *)key, strlen(key), 
+    result = decrypt_buffer( (bp_buffer_t *)buffer, (bp_size_t)strlen(buffer), 
+                             (bp_buffer_t *)key, (bp_size_t)strlen(key), 
                              &result_size );
 
     bp_buffer_t *null = result + result_size;

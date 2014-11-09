@@ -114,7 +114,7 @@ bp_buffer_t *BP_from_hex( bp_buffer_t *buffer, bp_size_t buffer_size, bp_size_t 
 
     while ( i < buffer_size ) {
         uint32_t value;
-        if ( sscanf( buffer, "%02x", &value ) == 1 ) {
+        if ( sscanf( (const char*)buffer, "%02x", &value ) == 1 ) {
             buffer += 2;
             *dst++ = value;
             *data_size += 1;
