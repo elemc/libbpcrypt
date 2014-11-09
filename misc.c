@@ -10,6 +10,7 @@
 
 #include "misc.h"
 #include <stdarg.h>
+#include "config.h"
 
 bp_buffer_t *BP_md5_hash( bp_buffer_t *buffer, bp_size_t buffer_size ) {
 

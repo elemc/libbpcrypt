@@ -11,6 +11,7 @@
 #include "old_crypt.h"
 #include <string.h>
 #include <openssl/aes.h>
+#include "config.h"
 
 bp_buffer_t *hex_hash_key( bp_buffer_t *key, bp_size_t key_size ) {
     bp_buffer_t *hash_key = BP_md5_hash( key, key_size );

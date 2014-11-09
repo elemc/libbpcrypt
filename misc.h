@@ -23,7 +23,6 @@ extern "C"{
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include "config.h"
 
 #if !defined(_WIN32) && !defined(_WIN64)
 #include <err.h>

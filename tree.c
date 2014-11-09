@@ -11,6 +11,7 @@
 #include "tree.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "config.h"
 
 void _clear_pointer_( void *ptr ) {
     if ( ptr == NULL )
