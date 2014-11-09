@@ -16,7 +16,7 @@ setup(
             'bpcrypt',
             ['bpcryptmodule.c'],
             include_dirs=['..'],
-            libraries=['libbpcrypt'],
+            libraries=['bpcrypt'],
             library_dirs=['../build/']
         )
     ],

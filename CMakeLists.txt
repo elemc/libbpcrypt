@@ -30,7 +30,7 @@ else ( NOT APPLE )
     endif ( NOT CMAKE_MACOSX_RPATH )
 endif ( NOT APPLE )
 
-set (PROJECT_NAME libbpcrypt)
+set (PROJECT_NAME bpcrypt)
 
 set(LIBBPCRYPT_VERSION_MAJOR 0)
 set(LIBBPCRYPT_VERSION_MINOR 1)
