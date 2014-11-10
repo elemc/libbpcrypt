@@ -23,10 +23,10 @@ if __name__ == '__main__':
     clean_buf = bpcrypt.decrypt_buffer( crypt_buf, key_data );
     clean = clean_buf.decode("UTF-8")
 
-    with open( "../build/Makefile.crypt", "r" ) as cf:
+    with open( "../build/Makefile.crypt", "rb" ) as cf:
         cf_buf = cf.read()
         wf_buf = bpcrypt.decrypt_buffer( cf_buf, key_data )
-        with open( "Makefile.decrypt", "w" ) as wf:
+        with open( "Makefile.decrypt", "wb" ) as wf:
             wf.write(wf_buf)
 
 
