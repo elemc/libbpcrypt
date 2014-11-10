@@ -52,16 +52,33 @@ crypt_decrypt_buffer( PyObject *self, PyObject *args )
     return Py_BuildValue( OUTPUT_FORMAT, (const char *)result, result_size ); //, result_size );
 }
 
+static PyObject *
+misc_BP_to_hex( PyObject *self, PyObject *args )
+{
+    char *buffer;
+    int buffer_size;
+   
+    if ( !PyArg_ParseTuple( args, "z#", &buffer, &buffer_size ) )
+        return NULL;
+
+    bp_size_t result_size;
+    bp_buffer_t *result = BP_to_hex( (bp_buffer_t *)buffer, buffer_size, &result_size );
+
+    return Py_BuildValue( "s#", (const char *)result, result_size );
+}
+
 static PyMethodDef bpcrypt_funcs[] = {
-    { "encrypt_buffer", (PyCFunction)crypt_encrypt_buffer, METH_VARARGS, "encrypt string buffer with key" },
-    { "decrypt_buffer", (PyCFunction)crypt_decrypt_buffer, METH_VARARGS, "decrypt string buffer with key" },
+    { "encrypt_buffer", (PyCFunction)crypt_encrypt_buffer,  METH_VARARGS, "encrypt string buffer with key" },
+    { "decrypt_buffer", (PyCFunction)crypt_decrypt_buffer,  METH_VARARGS, "decrypt string buffer with key" },
+    { "BP_to_hex",      (PyCFunction)misc_BP_to_hex,        METH_VARARGS, "convert byte array to hex string" }, 
     { NULL, NULL, 0, NULL }
 };
 
 #if PY_MAJOR_VERSION >= 3
-static char bpcrypt_docs[] = " \
+static char bpcrypt_docs[] = "Python module for libbpcrypt";
+/* \
      encrypt_buffer( buffer, key ): encrypt some string buffer with key\n \
-     decrypt_buffer( buffer, key ): decrypt some encrypted string buffer with key\n";
+     decrypt_buffer( buffer, key ): decrypt some encrypted string buffer with key\n"; */
 
 static struct PyModuleDef bpcrypt_def = {
    PyModuleDef_HEAD_INIT,
@@ -91,6 +108,5 @@ initbpcrypt(void)
     if (m == NULL)
         return;
 #endif
-
 }
 
