@@ -12,45 +12,44 @@
 #include <Python.h>
 #include <libbpcrypt/crypt.h>
 
+#if PY_MAJOR_VERSION >= 3
+#define OUTPUT_FORMAT "y#"
+#else
+#define OUTPUT_FORMAT "s#"
+#endif
+
 static PyObject *
 crypt_encrypt_buffer( PyObject *self, PyObject *args )
 {
-    const char *buffer, *key;
-    
-    if ( !PyArg_ParseTuple( args, "ss", &buffer, &key ) )
+    char *buffer, *key;
+    int buffer_size, key_size;
+   
+    if ( !PyArg_ParseTuple( args, "z#z#", &buffer, &buffer_size, &key, &key_size ) )
         return NULL;
 
     bp_buffer_t *result;
     bp_size_t result_size;
-    result = encrypt_buffer( (bp_buffer_t *)buffer, (bp_size_t)strlen(buffer), 
-                             (bp_buffer_t *)key, (bp_size_t)strlen(key),
-                             &result_size );
 
-    bp_buffer_t *null = result + result_size;
-    *null = '\0';
+    result = encrypt_buffer( (bp_buffer_t *)buffer, buffer_size, (bp_buffer_t *)key, key_size,  &result_size );
 
-    return Py_BuildValue( "s", result );
+    return Py_BuildValue( OUTPUT_FORMAT, (const char *)result, result_size ); //, result_size );
 }
 
 static PyObject *
 crypt_decrypt_buffer( PyObject *self, PyObject *args )
 {
-    const char *buffer, *key;
-    
-
-    if ( !PyArg_ParseTuple( args, "ss", &buffer, &key ) )
+    char *buffer, *key;
+    int buffer_size, key_size;
+   
+    if ( !PyArg_ParseTuple( args, "z#z#", &buffer, &buffer_size, &key, &key_size ) )
         return NULL;
 
     bp_buffer_t *result;
     bp_size_t result_size;
-    result = decrypt_buffer( (bp_buffer_t *)buffer, (bp_size_t)strlen(buffer), 
-                             (bp_buffer_t *)key, (bp_size_t)strlen(key), 
-                             &result_size );
 
-    bp_buffer_t *null = result + result_size;
-    *null = '\0';
+    result = decrypt_buffer( (bp_buffer_t *)buffer, buffer_size, (bp_buffer_t *)key, key_size,  &result_size );
 
-    return Py_BuildValue( "s", result );
+    return Py_BuildValue( OUTPUT_FORMAT, (const char *)result, result_size ); //, result_size );
 }
 
 static PyMethodDef bpcrypt_funcs[] = {
