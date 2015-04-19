@@ -54,6 +54,9 @@ void old_node_item( xmlNode *node, BPTreeRecord *parent )
         child = child->next;
     }
 
+    /*bp_size_t rdp_size;
+    bp_buffer_t *raw_data_password = BP_from_hex( password, strlent(password), &rdp_size );*/
+
     BPRecord_SetPassword( item_record, item_name, login, password );
 }
 

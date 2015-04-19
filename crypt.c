@@ -3,9 +3,9 @@
 #include "crypt.h"
 #include "config.h"
 
-int bp_aes_init_common ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size, bp_buffer_t *aes_key, bp_buffer_t *aes_vector );
-int bp_aes_init_encrypt ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size );
-int bp_aes_init_decrypt ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size );
+uint8_t bp_aes_init_common ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size, bp_buffer_t *aes_key, bp_buffer_t *aes_vector );
+uint8_t bp_aes_init_encrypt ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size );
+uint8_t bp_aes_init_decrypt ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size );
 
 bp_buffer_t *encrypt_buffer( bp_buffer_t *buffer, bp_size_t buffer_size, 
                              bp_buffer_t *key, bp_size_t key_size,
@@ -69,7 +69,7 @@ bp_buffer_t *decrypt_buffer( bp_buffer_t *buffer, bp_size_t buffer_size,
     return clean_buffer;
 }
 
-int bp_aes_init_common ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size, bp_buffer_t *aes_key, bp_buffer_t *aes_vector ) {
+uint8_t bp_aes_init_common ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size, bp_buffer_t *aes_key, bp_buffer_t *aes_vector ) {
     
     int result;
     int iteration_count = key_size; // FIXME: It's workaround
@@ -84,7 +84,7 @@ int bp_aes_init_common ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t ke
     return 0;
 }
 
-int bp_aes_init_encrypt ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size ) {
+uint8_t bp_aes_init_encrypt ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size ) {
 
     int result;
 
@@ -101,7 +101,7 @@ int bp_aes_init_encrypt ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t k
     return 0;
 }
 
-int bp_aes_init_decrypt ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size ) {
+uint8_t bp_aes_init_decrypt ( EVP_CIPHER_CTX *context, bp_buffer_t *key, bp_size_t key_size ) {
 
     int result;
 
