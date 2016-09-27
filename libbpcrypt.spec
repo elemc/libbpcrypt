@@ -7,7 +7,7 @@ License:        GPLv3
 URL:            https://bitbucket.org/elemc
 Source0:        https://repo.elemc.name/sources/%{name}-%{version}.tar.xz
 
-BuildRequires:  libxml2-devel openssl-devel
+BuildRequires:  libxml2-devel openssl-devel cmake
 
 %description
 Library for Basket of passwords file read and write
@@ -23,7 +23,6 @@ developing applications that use %{name}.
 
 %prep
 %autosetup
-
 
 %build
 %cmake -DWITH_OLD_CRYPT=ON -DCMAKE_BUILD_TYPE=Release -DWITH_XML=ON .
