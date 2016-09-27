@@ -1,0 +1,20 @@
+language: c
+
+compiler:
+        - clang
+        - gcc
+                   
+before_install:
+        - sudo apt-get update -q
+
+install:
+        - sudo apt-get install libxml2-dev libssl-dev cmake
+
+before_script:
+        - rm -rf build
+        - mkdir -p build
+        - cd build
+        - cmake -DCMAKE_VERBOSE_MAKEFILE=ON -DWITH_OLD_CRYPT=ON -DCMAKE_BUILD_TYPE=Release -DWITH_XML=ON ..
+        - make
+
+script: ctest -V

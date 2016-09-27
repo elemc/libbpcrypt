@@ -35,6 +35,8 @@ rm -rf $RPM_BUILD_ROOT
 %make_install
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
+%check
+ctest -V %{?_smp_mflags}
 
 %post -p /sbin/ldconfig
 
