@@ -5,7 +5,7 @@
 /* ------------------------------------ */
 
 /* Name: (misc)
-   Description: 
+   Description:
 */
 
 #include "misc.h"
@@ -31,9 +31,9 @@ bp_buffer_t *BP_md5_hash( bp_buffer_t *buffer, bp_size_t buffer_size ) {
 bp_buffer_t *BP_to_hex( bp_buffer_t *buffer, bp_size_t buffer_size, bp_size_t *hex_size ) {
     *hex_size = buffer_size * 2 + 1;
     bp_buffer_t *result_hex = calloc( sizeof( bp_buffer_t ), *hex_size );
-    
+
     int i;
-    for ( i = 0; i < buffer_size; i++ ) 
+    for ( i = 0; i < buffer_size; i++ )
         sprintf( (char *)(result_hex+i*2), "%02x", buffer[i]);
     result_hex[*hex_size - 1] = '\0';
 
@@ -52,7 +52,7 @@ bp_buffer_t *BP_read_file( const char *filename, bp_size_t *file_size )
 
     ssize_t read_len, all_len = 0;
     ssize_t read_buf_size = BP_READ_BLOCK_SIZE;
-   
+
     bp_buffer_t *read_buffer = calloc( sizeof( bp_buffer_t), read_buf_size );
     bp_buffer_t *all_buffer = NULL;
 
@@ -87,11 +87,11 @@ bp_buffer_t *BP_copy_ptr( bp_buffer_t *ptr )
 void BP_error( int code, int eval, const char *fmt, ... )
 {
     va_list ap;
-    va_start( ap, fmt );    
+    va_start( ap, fmt );
 
     char *msg = calloc( sizeof( char ), 1024 );
     if ( msg != NULL ) {
-        // int size = 
+        // int size =
         vsprintf( msg, fmt, ap );
 #if defined(_WIN32) || defined(_WIN64)
         printf( "%s\n", msg );
@@ -123,4 +123,14 @@ bp_buffer_t *BP_from_hex( bp_buffer_t *buffer, bp_size_t buffer_size, bp_size_t 
     }
 
     return result;
+}
+
+bp_buffer_t *CString_convert_to_BP_buffer(char *buf)
+{
+    return (bp_buffer_t *)buf;
+}
+
+char *BP_buffer_convert_to_CString(bp_buffer_t *buf)
+{
+    return (char *)buf;
 }

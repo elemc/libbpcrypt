@@ -5,7 +5,7 @@
 /* ------------------------------------ */
 
 /* Name: (misc)
-   Description: 
+   Description:
 */
 
 #ifndef MISC_H
@@ -13,7 +13,7 @@
 
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -42,9 +42,12 @@ extern bp_buffer_t *BP_copy_ptr( bp_buffer_t *ptr );
 extern bp_buffer_t *BP_ncopy_ptr( bp_buffer_t *ptr, bp_size_t size );
 extern void BP_error( int code, int eval, const char *fmt, ... );
 
+// methods for cgo
+extern bp_buffer_t *CString_convert_to_BP_buffer(char *buf);
+extern char *BP_buffer_convert_to_CString(bp_buffer_t *buf);
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-
