@@ -1,11 +1,11 @@
 Name:           libbpcrypt
-Version:        0.1
+Version:        0.1.0
 Release:        1%{?dist}
 Summary:        Library for basket passwords file read and write
 
 License:        GPLv3
 URL:            https://bitbucket.org/elemc
-Source0:        https://elemc.name/sources/%{name}-%{version}.tar.xz
+Source0:        https://repo.elemc.name/sources/%{name}-%{version}.tar.xz
 
 BuildRequires:  libxml2-devel openssl-devel
 
@@ -42,12 +42,12 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
 
 %files
-## %license add-license-file-here
-## %doc add-main-docs-here
+%license LICENSE
+%doc README
 %{_libdir}/*.so.*
 
 %files devel
-## %doc add-devel-docs-here
+%doc README
 %{_includedir}/*
 %{_libdir}/*.so
 
