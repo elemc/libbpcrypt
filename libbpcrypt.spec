@@ -45,11 +45,11 @@ ctest -V %{?_smp_mflags}
 
 %files
 %license LICENSE
-%doc README
+%doc README.md
 %{_libdir}/*.so.*
 
 %files devel
-%doc README
+%doc README.md
 %{_includedir}/*
 %{_libdir}/*.so
 
