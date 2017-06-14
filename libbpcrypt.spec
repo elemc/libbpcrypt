@@ -1,5 +1,5 @@
 Name:           libbpcrypt
-Version:        0.1.0
+Version:        0.1.1
 Release:        1%{?dist}
 Summary:        Library for basket passwords file read and write
 
@@ -54,5 +54,8 @@ ctest -V %{?_smp_mflags}
 
 
 %changelog
+* Wed Jun 14 2017 Alexei Panov <me AT elemc DOT name> 0.1.1-1
+- Fixed openssl struct to pointer for gcc 7
+
 * Tue Sep 27 2016 Alexei Panov <me@elemc.name>
 - Initial build

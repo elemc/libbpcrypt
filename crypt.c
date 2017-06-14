@@ -13,8 +13,8 @@ bp_buffer_t *encrypt_buffer( bp_buffer_t *buffer, bp_size_t buffer_size,
     int result;
 
     // init aes encrypt context
-    EVP_CIPHER_CTX en_context;
-    result = bp_aes_init_encrypt ( &en_context, key, key_size );
+    EVP_CIPHER_CTX *en_context = EVP_CIPHER_CTX_new();
+    result = bp_aes_init_encrypt ( en_context, key, key_size );
     if ( result != 0 ) {
         return NULL;
     }
@@ -26,18 +26,19 @@ bp_buffer_t *encrypt_buffer( bp_buffer_t *buffer, bp_size_t buffer_size,
     bp_buffer_t *cipher_buffer = calloc( sizeof( bp_buffer_t), cipher_size );
 
     /* allows reusing of 'e' for multiple encryption cycles */ //FIXME: WTF?
-    EVP_EncryptInit_ex ( &en_context, NULL, NULL, NULL, NULL );
+    EVP_EncryptInit_ex ( en_context, NULL, NULL, NULL, NULL );
 
     /* update ciphertext, c_len is filled with the length of ciphertext generated,
         *len is the size of plaintext in bytes */
-    EVP_EncryptUpdate ( &en_context, cipher_buffer, &cipher_size, buffer, buffer_size );
+    EVP_EncryptUpdate ( en_context, cipher_buffer, &cipher_size, buffer, buffer_size );
 
     /* update ciphertext with the final remaining bytes */
-    EVP_EncryptFinal_ex ( &en_context, cipher_buffer + cipher_size, &final_size);
+    EVP_EncryptFinal_ex ( en_context, cipher_buffer + cipher_size, &final_size);
 
     *cipher_buffer_size = cipher_size + final_size;
 
-    EVP_CIPHER_CTX_cleanup( &en_context );
+    EVP_CIPHER_CTX_cleanup( en_context );
+    EVP_CIPHER_CTX_free(en_context);
 
     return cipher_buffer;
 }
@@ -48,8 +49,8 @@ bp_buffer_t *decrypt_buffer( bp_buffer_t *buffer, bp_size_t buffer_size,
     int result;
     
     // init aes encrypt context
-    EVP_CIPHER_CTX de_context;
-    result = bp_aes_init_decrypt ( &de_context, key, key_size );
+    EVP_CIPHER_CTX *de_context = EVP_CIPHER_CTX_new();
+    result = bp_aes_init_decrypt ( de_context, key, key_size );
     if ( result != 0 ) {
         return NULL;
     }
@@ -58,13 +59,14 @@ bp_buffer_t *decrypt_buffer( bp_buffer_t *buffer, bp_size_t buffer_size,
     bp_size_t cb_size = clean_size;
     bp_buffer_t *clean_buffer = calloc( sizeof( bp_buffer_t), cb_size );
   
-    EVP_DecryptInit_ex( &de_context, NULL, NULL, NULL, NULL);
-    EVP_DecryptUpdate( &de_context, clean_buffer, &clean_size, buffer, buffer_size );
-    EVP_DecryptFinal_ex( &de_context, clean_buffer + clean_size, &final_size );
+    EVP_DecryptInit_ex( de_context, NULL, NULL, NULL, NULL);
+    EVP_DecryptUpdate( de_context, clean_buffer, &clean_size, buffer, buffer_size );
+    EVP_DecryptFinal_ex( de_context, clean_buffer + clean_size, &final_size );
 
     *clean_buffer_size = clean_size + final_size;
 
-    EVP_CIPHER_CTX_cleanup( &de_context );
+    EVP_CIPHER_CTX_cleanup( de_context );
+    EVP_CIPHER_CTX_free(de_context);
 
     return clean_buffer;
 }

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PROJECT_NAME=libbpcrypt
-VERSION=0.1.0
+VERSION=0.1.1
 PKGNAME=${PROJECT_NAME}-${VERSION}
 
 pushd ..
